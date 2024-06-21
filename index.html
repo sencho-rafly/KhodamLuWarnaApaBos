@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☠️ Cek Khodam Lu Kids ☠️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <style>
+        body {
+            background-color: rgba(10, 10, 10, 0.9); /* Background lebih gelap */
+            font-family: 'Poppins', sans-serif; /* Font modern Poppins */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.938);
+            padding: 20px;
+            border: 1px solid rgb(1, 1, 1); /* Border jingga ke kuningan */
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.669); /* Shadow lebih gelap */
+            backdrop-filter: blur(10px); /* Blur lebih kuat */
+            position: relative; /* Untuk positioning spinner */
+        }
+
+        h1, p {
+            color: #FFA500; /* Warna font jingga ke kuningan */
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #070707; /* Border input */
+            border-radius: 200px;
+            text-align: center;
+            width: 80%;
+            margin-bottom: 20px;
+            background-color: transparent;
+            color: #010101;
+        }
+
+        button {
+            background-color: #51ff77;
+            color: #ffffff;
+            padding: 10px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 200px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            background-color: rgb(204, 65, 65);
+            transform: translateY(-3px); /* Efek naik saat hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Shadow lebih dalam saat hover */
+        }
+
+        .footer {
+            color: #0696fc;
+            font-weight: bold;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #result {
+            display: none;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #FFA500; /* Warna jingga ke kuningan */
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -20px; /* Setengah dari tinggi */
+            margin-left: -20px; /* Setengah dari lebar */
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>Coba Cek Khodam!!!</h1>
+        <p>Masukkan nama Lu Yang Jamet untuk mengetahui khodam</p>
+        <input type="text" id="nameInput" placeholder="Ketik nama kamu di sini">
+        <button onclick="cekKhodam()">Cek Khodam</button>
+        <div id="loading" class="loading-spinner" style="display: none;"></div>
+        <button onclick="resetForm()" style="margin-top: 20px;">Cek Lagi</button>
+        <div id="result">
+            <h2 id="khodamName"></h2>
+            <p id="khodamMeaning"></p>
+        </div>
+    </div>
+    <div class="footer">
+        © 2024 <a target="_blank">RaflyMewing</a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        function cekKhodam() {
+            const nameInput = document.getElementById('nameInput').value;
+            if (!nameInput) {
+                Swal.fire({
+                    title: 'IHH GA BOLEH KOSONG YA SAYANG! 🥺👉👈',
+                    icon: 'error',
+                    confirmButtonText: 'JANGAN SALTING KALO LU COWO,JOMOK!!'
+                });
+                return;
+            }
+            document.getElementById('loading').style.display = 'block'; // Tampilkan spinner
+            setTimeout(() => {
+                const khodams = [
+                { name: "Macan Palembang", meaning: "Kamu kuat dan berani seperti MC, karena pendahulumu mewariskan kekuatan besar padamu." },
+                { name: "Lampu Tertidur", meaning: "Terlihat ngantuk tapi selalu memberikan cahaya yang hangat" },
+                { name: "Panda Ompong", meaning: "Kamu menggemaskan dan selalu berhasil membuat orang tersenyum dengan keanehanmu." },
+                { name: "Bebek Mudi", meaning: "Kamu selalu Enak di setiap sarapan." },
+                { name: "Ninja Turtle", meaning: "Kamu lincah dan tangguh, siap melindungi yang lemah dengan kekuatan tempurmu." },
+                { name: "Orang Misterius", meaning: "Kamu misterius dan selalu ada di tempat-tempat yang tak terduga." },
+                { name: "Jangkrik Burut", meaning: "Kamu selalu membawa keharuman dan kesegaran di mana pun kamu berada." },
+                { name: "Ganjar Mulet", meaning: "Kamu pekerja keras dan selalu bisa diandalkan dalam situasi apa pun." },
+                { name: "Moge Suzuki", meaning: "Kamu cepat dan penuh gaya, selalu menjadi pusat perhatian di jalanan." },
+                { name: "Cupcake Pelangi", meaning: "Kamu manis dan penuh warna, selalu membawa kebahagiaan dan keceriaan." },
+                { name: "Ayam Jago", meaning: "Kamu Kuat dan selalu siap membantu dengan kecerdasan tinggi." },
+                { name: "Kairi Kumar", meaning: "Kamu unik dan Mama mu pasti bangga, selalu melampaui batasan yang ada." },
+                { name: "Kumar Jawir", meaning: "Kamu selalu disukai dan dinanti oleh banyak orang." },
+                { name: "Jawir Mulet", meaning: "Kamu selalu mengagetkan dan bikin heboh seisi ruangan." },
+                { name: "Kambing Ngebor", meaning: "Kamu unik dan selalu bikin orang tertawa dengan tingkah lakumu yang aneh." },
+                { name: "Lutung Kresek", meaning: "Kamu selalu bikin suasana jadi lebih seru dan nikmat." },
+                { name: "Celengan Babi", meaning: "Kamu selalu menyimpan kejutan di dalam dirimu." },
+                { name: "Anime Ganteng", meaning: "Kamu Selalu di naksirin banyak cewe Tobrut Baik." },
+                { name: "Wibu gak baubawang", meaning: "Kamu selalu bikin semangat orang-orang di sekitarmu." },
+                { name: "Sapu Lidi", meaning: "Kamu kuat dan selalu bisa diandalkan untuk membersihkan masalah." },
+                { name: "Kuda Lumping", meaning: "Kamu penuh semangat dan selalu tampil beda di setiap kesempatan." },
+                { name: "Bagong Kuprut", meaning: "Kamu cepat dan lincah, selalu bergerak ke depan dengan penuh gaya." },
+                { name: "Sistem Hitam", meaning: "Kamu ringan dan selalu bikin permainan jadi lebih seru." },
+                { name: "Harimau jawa", meaning: "Kamu pintar dan selalu membawa keceriaan di lautan kehidupan." },
+                { name: "Pedo Cabul", meaning: "Kamu santai dan selalu bikin orang tersenyum dengan kelucuanmu." },
+                { name: "Iguana Pink", meaning: "Kamu eksotis dan selalu menarik perhatian dengan warnamu yang unik." },
+                { name: "Sigit Rendang", meaning: "Kamu nyaman dan selalu dibutuhkan saat waktu istirahat." },
+                { name: "Komputer Jadul", meaning: "Kamu klasik dan penuh dengan pengetahuan di dalam dirimu." },
+                { name: "Bidadari Sawah", meaning: "Kamu selalu memberikan kenyamanan dan ketenangan." },
+                { name: "Bola Bekel", meaning: "Kamu kecil tapi selalu memberikan kebahagiaan di setiap permainan." },
+                { name: "Es Krim Pelangi", meaning: "Kamu manis dan penuh warna, selalu menyegarkan hari-hari." },
+                { name: "Berotak Senku", meaning: "Kamu selalu Memikirkan hal yang di luar nalar." },
+                { name: "Nasi Padang", meaning: "Kamu selalu bikin kenyang dan puas dengan kelezatanmu yang khas." },
+                { name: "Kucing Sigma", meaning: "Kamu Selalu sigma di depan orang dan di kagumi." },
+                { name: "Kuda Jingkrak", meaning: "Kamu klasik dan selalu memberikan kesenangan di setiap perjalanan." },
+                { name: "Rendang Jawa", meaning: "Kamu gurih dan selalu jadi favorit di setiap kesempatan." },
+                { name: "Seblak Goceng", meaning: "Kamu selalu bikin orang bahagia dengan rasamu yang enak." },
+                { name: "Seblak Arisan", meaning: "Kamu kuat dan selalu memberikan kenikmatan di setiap gigitan." },
+                { name: "Jawir wangsaf", meaning: "Kamu Sangat suka berbagi stiker di watssap ." },
+                { name: "Siomay Bandung", meaning: "Kamu selalu bikin ketagihan dengan rasa khasmu yang lezat." },
+                { name: "Kak Gem", meaning: "Kamu selalu bikin suasana jadi hangat dan nyaman bagi semua orang." },
+                { name: "Martabak Manis", meaning: "Kamu penuh kejutan dengan isi yang manis dan nikmat." },
+                { name: "Batagor Jawa", meaning: "Kamu selalu bikin suasana jadi lebih ceria dengan kenikmatanmu yang kenyal." },
+                { name: "Pisang Goreng", meaning: "Kamu selalu bikin suasana jadi lebih hangat dan nyaman." },
+                { name: "Botak Biadab", meaning: "Kamu sederhana tapi selalu bikin orang puas." },
+                { name: "Hallo Dek", meaning: "Kamu selalu bikin hari jadi lebih ceria." },
+                { name: "Mie Goreng", meaning: "Kamu selalu bikin kenyang dan puas dengan rasamu yang lezat." },
+                { name: "Epic abadi", meaning: "Kamu Selalu menjadi orang berbahaya dan menakutkan." },
+                { name: "Mekalren Lu warna apa Bos", meaning: "Kamu kaya dan selalu bikin orang ketagihan ." },
+                { name: "Rawa Rontek", meaning: "Kamu selalu Kebal saat nge allbase Malam hari." },
+                { name: "Krupuk Ikan", meaning: "Kamu renyah dan selalu bikin suasana jadi lebih seru." },
+                { name: "Soklin Lantai", meaning: "Kamu penuh kejutan dengan campuran rasa yang enak." },
+                { name: "Rujak Buah", meaning: "Kamu segar dan selalu bikin suasana jadi lebih hidup dengan rasamu yang pedas dan manis." },
+                { name: "Soto Ayam", meaning: "Kamu selalu bikin hangat dan puas dengan kuahmu yang lezat." },
+                { name: "Ronaldo Banyuwangi", meaning: "Kamu selalu hadir di momen-momen yang pas dengan rasa yang enak." },
+                { name: "Keripik Singkong", meaning: "Kamu renyah dan selalu bikin suasana jadi lebih seru." },
+                { name: "Pemuda pancasila", meaning: "Kamu selalu jadi camilan favorit di setiap Hajatan." },
+                { name: "Kuda Kecipirit", meaning: "Kamu kaya rasa dan selalu bikin orang ketagihan dengan kelezatanmu." },
+                { name: "Si imut banyuwangi", meaning: "Kamu selalu bikin kenyang dan puas dengan rasa khasmu yang lezat." },
+                { name: "Si kang gendong", meaning: "Kamu selalu puas dengan rasa winstrek." },
+                { name: "Fanny Darat", meaning: "Kamu Selalu di bacotin Team sendiri dan Yteam." },
+                { name: "Balmod Magic", meaning: "Kamu selalu hadir di saat-saat spesial dengan rasa yang manis dan enak." },
+                { name: "Bocil epep", meaning: "Kamu selalu Jago maen epep." },
+                { name: "Macan Kumbang", meaning: "Kamu misterius dan kuat, seperti macan yang jarang terlihat tapi selalu waspada." },
+                { name: "Kuda Mulet", meaning: "Kamu berharga dan kuat, siap untuk berlari menuju kesuksesan." },
+                { name: "Kanjud Mewing", meaning: "Kamu memiliki visi yang tajam dan dapat melihat peluang dari jauh." },
+                { name: "Indomie Goreng", meaning: "Selalu bikin kenyang dan bahagia" },
+                { name: "Es Krim Meleleh", meaning: "Selalu mencairkan suasana dengan rasa manisnya" },
+                { name: "Helcrut Roam", meaning: "Selalu gigih dan bulat dalam menghadapi masalah" },
+                { name: "Lem Super", meaning: "Selalu lengket dalam situasi yang rumit" },
+                { name: "Saos ABC", meaning: "Selalu memberikan sentuhan manis dalam hidup" },
+                { name: "Sabun Mandi", meaning: "Selalu bersih dan wangi" },
+                { name: "Monyet Mewing", meaning: "Selalu bersemangat, tapi kadang berantakan" },
+                { name: "Raja Mewing", meaning: "Selalu klasik dan sederhana" },
+                { name: "Monyet Mulet", meaning: "Ber iq di bawah 50" },
+                { name: "Kucing Kampung", meaning: "Selalu mandiri dan penuh petualangan" },
+                { name: "Jawa Pahit", meaning: "Selalu memberi kekuatan meski tak enak di awal" },
+                { name: "Mursid Mukbang", meaning: "Selalu rendah hati dan sehat bergizi" },
+                { name: "Raja sigma", meaning: "Selalu ringan dan praktis" },
+                { name: "Dark Sistem", meaning: "Selalu Beban dan Kontol" },
+                { name: "Motor Astrea", meaning: "Selalu setia dan bandel" },
+                { name: "Indomie Goreng", meaning: "Selalu cepat dan mengenyangkan" },
+                { name: "Martabak Peju", meaning: "Selalu lembut dan manis" },
+                { name: "Bolu jawa", meaning: "Selalu enak di segala suasana" },
+                { name: "Pace Jawa", meaning: "Memiliki body hitam kental " },
+                { name: "Motor Supra", meaning: "Selalu menambah kenikmatan" },
+                { name: "Saber Roam", meaning: "Kamu Selalu memberi semangat Team" },
+                { name: "Kacang Goreng", meaning: "Selalu asyik untuk ngemil" },
+                { name: "Roger Sumatra", meaning: "Andalan semua orang dan anti indomaret" },
+                { name: "Alucar Tiktok", meaning: "Selalu pedas dan menggigit" },
+                { name: "Tobrut Jahat", meaning: "Selalu mengenyangkan dan lezat" },
+                { name: "Tobrut Baik", meaning: "Selalu segar di siang hari" },
+                { name: "Pria Matang", meaning: "Kamu Selalu gagah berani" },
+                { name: "Pisang Goreng", meaning: "Selalu manis dan gurih" },
+                { name: "Raja Bokep", meaning: "Selalu Ngaceng saat melihat tobrut" },
+                { name: "Ireng pemberani", meaning: "Selalu hangat dan mengenyangkan" },
+                { name: "Stiker jomok", meaning: "Selalu Jomok dan gurih" },
+                { name: "Jawir asik", meaning: "Selalu penuh dengan kenikmatan" },
+                { name: "Raja Iblis", meaning: "Selalu Kuat dan OP di setiap saat" },
+                { name: "MC harem", meaning: "Selalu hidup cabul dan enak" },
+                { name: "Bakmi Jawa", meaning: "Selalu menggugah selera" },
+                { name: "Jomok Cabul", meaning: "Selalu enak di segala acara" },
+                { name: "Sapi Kurban", meaning: "Selalu kaya rasa dan lezat" },
+                { name: "Rawon Sapi", meaning: "Selalu hitam dan nikmat" },
+                { name: "Jomblo Jomok", meaning: "Selalu Setia Penyayang Padahal tapi tetep Jomblo" },
+                { name: "Wibu baubawang", meaning: "Selalu lezat dan bergizi" },
+                { name: "Wota Belum Mandi", meaning: "Selalu Cabul saat konser" },
+                { name: "Roko sampurna", meaning: "Selalu Nikmat dan menggoda" },
+                { name: "Marmut Jawa", meaning: "Selalu Sangar dan Suka mukbang" },
+                { name: "Pawang Tante-Tante", meaning: "Selalu Jadi Penakluk Janda/Tante" },
+                { name: "Bubur Kacang Hijau", meaning: "Selalu hangat dan mengenyangkan" },
+                { name: "Bakpao", meaning: "Selalu lembut dan enak" },
+                { name: "Messi Kambing", meaning: "Kamu selalu jago gocek saat bermain bola" },
+                { name: "Sosis Bakar", meaning: "Selalu enak di segala suasana" },
+                { name: "Raja Wota", meaning: "Selalu Kerasukan saat konser dan jarang mandi" },
+                { name: "Raja Wibu", meaning: "Selalu mengeluarkan aura wibu yang kuat" },
+                { name: "Pastel", meaning: "Selalu renyah dan nikmat" },
+                { name: "Cilok Jawir", meaning: "Selalu kenyal dan enak" },
+                { name: "Uni bakwan", meaning: "Kamu adalah spesies langka Selalu gurih dan lezat" },
+                    // Tambahkan khodam lainnya sesuai kebutuhan
+                ];
+                const khodam = khodams[Math.floor(Math.random() * khodams.length)];
+                document.getElementById('khodamName').innerText = `Khodam: ${khodam.name}`;
+                document.getElementById('khodamMeaning').innerText = khodam.meaning;
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('loading').style.display = 'none'; // Sembunyikan spinner
+            }, 2000); // Delay untuk simulasi loading
+        }
+
+        function resetForm() {
+            document.getElementById('nameInput').value = '';
+            document.getElementById('result').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
